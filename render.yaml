@@ -1,0 +1,38 @@
+# Render Blueprint: creates the API web service and a Postgres database.
+# In Render: New + → Blueprint → pick this repo. Then fill the "sync: false" secrets in the dashboard.
+databases:
+  - name: planpal-db
+    plan: free
+    databaseName: planpal
+    user: planpal
+
+services:
+  - type: web
+    name: planpal-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: planpal-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        sync: false # e.g. https://planpal.vercel.app
+      - key: APP_URL
+        sync: false # same Vercel URL, used in email links
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
+      - key: MAIL_FROM_EMAIL
+        sync: false # a sender address verified with your email provider
+      - key: BREVO_API_KEY
+        sync: false
