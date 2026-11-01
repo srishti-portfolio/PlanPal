@@ -22,8 +22,8 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('7d'),
   BCRYPT_ROUNDS: z.coerce.number().int().min(4).max(15).default(11),
 
-  GEMINI_API_KEY: optional,
-    GEMINI_MODEL: z.string().default('gemini-3.8-flash'),
+  GEMINI_API_KEY: optional, 
+  GEMINI_MODEL: z.string().default('gemini-3.8-flash'),
 
   MAIL_FROM_NAME: z.string().default('PlanPal'),
   MAIL_FROM_EMAIL: z.string().email().default('no-reply@example.com'),
